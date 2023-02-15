@@ -55,6 +55,7 @@
     data: () => ({
       drawer: null,
       items: [
+          { title: 'Profile', icon: 'mdi-account',to:'/home' },
           { title: 'User', icon: 'mdi-view-dashboard',to:'/' },
           { title: 'Admin', icon: 'mdi-help-box',to:'/showstudents' }
         ],
