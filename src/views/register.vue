@@ -11,7 +11,7 @@
 
       <v-text-field v-model="lastName" :rules="rules" label="Id Number"></v-text-field>
 
-      <!------------------ Camera ------------------>
+      
       <v-btn style="width: 100%;">
         <div id="app" class="web-camera-container">
           <div class="camera-button">
@@ -52,7 +52,6 @@
           </div>
         </div>
       </v-btn>
-      <!------------------ Camera ------------------>
 
 
       <v-text-field v-model="lastName" :rules="rules" label="UserName"></v-text-field>
