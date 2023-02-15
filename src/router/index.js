@@ -14,14 +14,21 @@ const routes = [
     path: '/register',
     name: 'register',
     component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/register.vue')
+      return import('../views/register.vue')
     }
   },
   {
     path: '/forgetpass',
     name: 'forgetpass',
     component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/forgetpass.vue')
+      return import('../views/forgetpass.vue')
+    }
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: function () {
+      return import('../views/success.vue')
     }
   }
 ]
