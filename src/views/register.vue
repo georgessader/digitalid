@@ -1,5 +1,5 @@
 <template>
-  <v-sheet width="500" class="mx-auto">
+  <v-sheet width="400" class="mx-auto">
     <v-form @submit.prevent>
       <v-text-field v-model="firstName" :rules="rules" label="First Name"></v-text-field>
       <v-text-field v-model="middlename" :rules="rules" label="Middle Name"></v-text-field>
