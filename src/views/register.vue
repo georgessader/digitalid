@@ -1,17 +1,17 @@
 <template>
-  <v-sheet width="300" class="mx-auto">
+  <v-sheet width="500" class="mx-auto">
     <v-form @submit.prevent>
       <v-text-field v-model="firstName" :rules="rules" label="First Name"></v-text-field>
-      <v-text-field v-model="lastName" :rules="rules" label="Middle Name"></v-text-field>
+      <v-text-field v-model="middlename" :rules="rules" label="Middle Name"></v-text-field>
       <v-text-field v-model="lastName" :rules="rules" label="Last Name"></v-text-field>
-      <v-text-field v-model="lastName" :rules="rules" label="Email Address"></v-text-field>
-      <v-text-field v-model="lastName" :rules="rules" label="Phone Number"></v-text-field>
+      <v-text-field v-model="email" :rules="rules" label="Email Address"></v-text-field>
+      <v-text-field v-model="phonenumber" :rules="rules" label="Phone Number"></v-text-field>
 
       <v-file-input label="Id Image"></v-file-input>
 
-      <v-text-field v-model="lastName" :rules="rules" label="Id Number"></v-text-field>
+      <v-text-field v-model="idnumber" :rules="rules" label="Id Number"></v-text-field>
 
-      
+
       <v-btn style="width: 100%;">
         <div id="app" class="web-camera-container">
           <div class="camera-button">
@@ -54,11 +54,12 @@
       </v-btn>
 
 
-      <v-text-field v-model="lastName" :rules="rules" label="UserName"></v-text-field>
-      <v-text-field v-model="lastName" type="password" :rules="rules" label="Password"></v-text-field>
-      <v-text-field v-model="lastName" type="password" :rules="rules" label="Confirm Password"></v-text-field>
+      <v-text-field v-model="username" :rules="rules" label="UserName"></v-text-field>
+      <v-text-field v-model="password" type="password" :rules="rules" label="Password"></v-text-field>
+      <v-text-field v-model="confirmpassword" type="password" :rules="rules" label="Confirm Password"></v-text-field>
 
       <v-btn type="submit" block class="mt-2">Submit</v-btn>
+      <a style="width: 100%; text-align: center;" href="/#/">Sign In</a>
     </v-form>
   </v-sheet>
 </template>
