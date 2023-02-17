@@ -1,15 +1,15 @@
 <template>
   <v-sheet width="400" class="mx-auto">
     <v-form @submit.prevent>
-      <v-text-field v-model="firstName" :rules="rules" label="First Name"></v-text-field>
-      <v-text-field v-model="middlename" :rules="rules" label="Middle Name"></v-text-field>
-      <v-text-field v-model="lastName" :rules="rules" label="Last Name"></v-text-field>
-      <v-text-field v-model="email" :rules="rules" label="Email Address"></v-text-field>
-      <v-text-field v-model="phonenumber" :rules="rules" label="Phone Number"></v-text-field>
+      <v-text-field v-model="firstName" label="First Name"></v-text-field>
+      <v-text-field v-model="middlename" label="Middle Name"></v-text-field>
+      <v-text-field v-model="lastName" label="Last Name"></v-text-field>
+      <v-text-field v-model="email" label="Email Address"></v-text-field>
+      <v-text-field v-model="phonenumber" label="Phone Number"></v-text-field>
 
       <v-file-input label="Id Image"></v-file-input>
 
-      <v-text-field v-model="idnumber" :rules="rules" label="Id Number"></v-text-field>
+      <v-text-field v-model="idnumber" label="Id Number"></v-text-field>
 
 
       <v-btn style="width: 100%;">
@@ -54,19 +54,21 @@
       </v-btn>
 
 
-      <v-text-field v-model="username" :rules="rules" label="UserName"></v-text-field>
-      <v-text-field v-model="password" type="password" :rules="rules" label="Password"></v-text-field>
-      <v-text-field v-model="confirmpassword" type="password" :rules="rules" label="Confirm Password"></v-text-field>
+      <v-text-field v-model="username" label="UserName"></v-text-field>
+      <v-text-field v-model="password" type="password" label="Password"></v-text-field>
+      <v-text-field v-model="confirmpassword" type="password" label="Confirm Password"></v-text-field>
 
-      <v-btn type="submit" block class="mt-2">Submit</v-btn>
+      <v-btn block class="mt-2" color="success" @click="register">Sign Up</v-btn>
       <a style="width: 100%; text-align: center;" href="/#/">Sign In</a>
     </v-form>
+    <v-snackbar :timeout="20000" absolute bottom left>
+        {{ status }}
+      </v-snackbar>
   </v-sheet>
 </template>
 
 
 <script>
-
 export default {
   data() {
     return {
@@ -74,7 +76,17 @@ export default {
       isPhotoTaken: false,
       isShotPhoto: false,
       isLoading: false,
-      link: '#'
+      link: '#',
+      firstName:"test",
+      middlename:"test",
+      lastName:"test",
+      email:"test",
+      phonenumber:"test",
+      idnumber:"test",
+      username:"test",
+      password:"test",
+      confirmpassword:"test",
+      status:"Test Status"
     }
   },
 
@@ -142,6 +154,37 @@ export default {
       const canvas = document.getElementById("photoTaken").toDataURL("image/jpeg")
         .replace("image/jpeg", "image/octet-stream");
       download.setAttribute("href", canvas);
+    },
+    async register() {
+      try {
+        let formData = new FormData();
+        formData.append("firstName",this.firstName);
+        formData.append("middlename",this.middlename);
+        formData.append("lastName",this.lastName);
+        formData.append("email",this.email);
+        formData.append("phonenumber",this.phonenumber);
+        formData.append("idnumber",this.idnumber);
+        formData.append("username",this.username);
+        formData.append("password",this.password);
+        formData.append("confirmpassword",this.confirmpassword);
+        let st={
+          "firstName":this.firstName,
+          "middlename":this.middlename,
+          "lastName":this.lastName,
+          "email":this.email,
+          "phonenumber":this.phonenumber,
+          "idnumber":this.idnumber,
+          "username":this.username,
+          "password":this.password,
+          "confirmpassword":this.confirmpasswor
+        }
+        console.log(JSON.stringify(st));
+        const response = await this.$http.post('http://127.0.0.1:8000/registers/', formData);
+        this.status = response.data
+        console.log(this.status);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };
