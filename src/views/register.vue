@@ -80,12 +80,12 @@ export default {
       firstName:"test",
       middlename:"test",
       lastName:"test",
-      email:"test",
-      phonenumber:"test",
-      idnumber:"test",
+      email:"sdsdddae@k.com",
+      phonenumber:"71409487",
+      idnumber:"1122003",
       username:"test",
-      password:"test",
-      confirmpassword:"test",
+      password:"IIIIiiii0000_",
+      confirmpassword:"IIIIiiii0000_",
       status:"Test Status"
     }
   },
@@ -168,18 +168,23 @@ export default {
         formData.append("password",this.password);
         formData.append("confirmpassword",this.confirmpassword);
         let st={
-          "firstName":this.firstName,
-          "middlename":this.middlename,
-          "lastName":this.lastName,
+          "first_name":this.firstName,
+          "middle_name":this.middlename,
+          "last_name":this.lastName,
           "email":this.email,
-          "phonenumber":this.phonenumber,
-          "idnumber":this.idnumber,
-          "username":this.username,
+          "phone_number":this.phonenumber,
+          "date_of_birth": "1996-02-19",
+          "place_of_birth": "string",
+          "country": "string",
+          "city": "string",
+          "postal_code": "string",
+          "district": "string",
+          "id_number": "string",
           "password":this.password,
-          "confirmpassword":this.confirmpasswor
+
         }
         console.log(JSON.stringify(st));
-        const response = await this.$http.post('http://127.0.0.1:8000/registers/', formData);
+        const response = await this.$http.post('http://localhost:8000/users/register', st);
         this.status = response.data
         console.log(this.status);
       } catch (error) {
