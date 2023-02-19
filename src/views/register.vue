@@ -157,16 +157,16 @@ export default {
     },
     async register() {
       try {
-        let formData = new FormData();
-        formData.append("firstName",this.firstName);
-        formData.append("middlename",this.middlename);
-        formData.append("lastName",this.lastName);
-        formData.append("email",this.email);
-        formData.append("phonenumber",this.phonenumber);
-        formData.append("idnumber",this.idnumber);
-        formData.append("username",this.username);
-        formData.append("password",this.password);
-        formData.append("confirmpassword",this.confirmpassword);
+        // let formData = new FormData();
+        // formData.append("firstName",this.firstName);
+        // formData.append("middlename",this.middlename);
+        // formData.append("lastName",this.lastName);
+        // formData.append("email",this.email);
+        // formData.append("phonenumber",this.phonenumber);
+        // formData.append("idnumber",this.idnumber);
+        // formData.append("username",this.username);
+        // formData.append("password",this.password);
+        // formData.append("confirmpassword",this.confirmpassword);
         let st={
           "first_name":this.firstName,
           "middle_name":this.middlename,
