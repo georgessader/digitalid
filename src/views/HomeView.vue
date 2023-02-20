@@ -7,6 +7,9 @@
       <v-btn block class="mt-2" color="success" @click="register">Log In</v-btn>
       <a style="width: 100%; text-align: center;" href="/#/register">Register</a>
     </v-form>
+    <h4 style="color:red;">
+      {{ status }}
+    </h4>
   </v-sheet>
 </template>
 
@@ -16,7 +19,8 @@ export default {
   data() {
     return {
       email: "ihab-hachem@outlook.com",
-      password: "sada",
+      password: "Ih@b00000",
+      status:""
     }
   },
 
@@ -28,9 +32,16 @@ export default {
           "password":this.password
         }
         const response = await this.$http.post('http://localhost:8000/users/login', st);
-        this.status = response.data
-        console.log(this.status);
+        if(response.status==200)
+        {
+          // http://localhost:8080/#/home
+          sessionStorage.setItem("email", this.email);
+          sessionStorage.setItem("id", response.data["id"]);
+          this.$router.push({ path: '/home' })
+        }
+        console.log(response.status);
       } catch (error) {
+        this.status="Email or password incorrect"
         console.log(error);
       }
     }

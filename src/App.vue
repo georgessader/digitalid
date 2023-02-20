@@ -1,8 +1,6 @@
 <template>
-  <v-app id="inspire" >
-    <v-navigation-drawer
-      v-model="drawer"
-      app>
+  <v-app id="inspire">
+    <v-navigation-drawer v-model="drawer" app>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="text-h6">
@@ -16,16 +14,8 @@
 
       <v-divider></v-divider>
 
-      <v-list
-        dense
-        nav
-      >
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-          :to="item.to"
-          link
-        >
+      <v-list dense nav>
+        <v-list-item v-for="item in items" :key="item.title" :to="item.to" link>
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -51,15 +41,37 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({
+export default {
+
+  data() {
+    return {
       drawer: null,
-      items: [
-          { title: 'Profile', icon: 'mdi-account',to:'/home' },
-          { title: 'User', icon: 'mdi-view-dashboard',to:'/' },
-          { title: 'Admin', icon: 'mdi-help-box',to:'/showstudents' }
-        ],
-        right: null,    
-    }),
+      items: [],
+      right: null,
+    }
+  },
+  methods: {
+    loadApp() {
+      console.log("called")
+      if (sessionStorage.getItem('email'))
+        this.items = [
+          { title: 'Profile', icon: 'mdi-account', to: '/home' },
+          { title: 'Log out', icon: 'mdi-exit', to: '/logout' }
+        ]
+      else
+        this.items = [
+          { title: 'Login', icon: 'mdi-view-dashboard', to: '/' }
+        ]
+    },
+  },
+  created() {
+    this.loadApp();
+  },
+  mounted() {
+    const thisInstance = this
+    this.$root.$on('loadApp', function () {
+      thisInstance.loadApp()
+    })
   }
+}
 </script>

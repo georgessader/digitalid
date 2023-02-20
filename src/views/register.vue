@@ -6,6 +6,12 @@
       <v-text-field v-model="lastName" label="Last Name"></v-text-field>
       <v-text-field v-model="email" label="Email Address"></v-text-field>
       <v-text-field v-model="phonenumber" label="Phone Number"></v-text-field>
+      <v-text-field type="date" v-model="date_of_birth" label="Date Of Birth"></v-text-field>
+      <v-text-field  v-model="place_of_birth" label="Place Of Birth"></v-text-field>
+      <v-text-field  v-model="country" label="Contry"></v-text-field>
+      <v-text-field  v-model="city" label="City"></v-text-field>
+      <v-text-field  v-model="postal_code" label="Postal Code"></v-text-field>
+      <v-text-field  v-model="district" label="District"></v-text-field>
 
       <v-file-input label="Id Image"></v-file-input>
 
@@ -54,16 +60,15 @@
       </v-btn>
 
 
-      <v-text-field v-model="username" label="UserName"></v-text-field>
       <v-text-field v-model="password" type="password" label="Password"></v-text-field>
       <v-text-field v-model="confirmpassword" type="password" label="Confirm Password"></v-text-field>
 
       <v-btn block class="mt-2" color="success" @click="register">Sign Up</v-btn>
       <a style="width: 100%; text-align: center;" href="/#/">Sign In</a>
     </v-form>
-    <v-snackbar :timeout="20000" absolute bottom left>
+    <h3>
         {{ status }}
-      </v-snackbar>
+    </h3>
   </v-sheet>
 </template>
 
@@ -76,17 +81,22 @@ export default {
       isPhotoTaken: false,
       isShotPhoto: false,
       isLoading: false,
-      link: '#',
-      firstName:"test",
-      middlename:"test",
-      lastName:"test",
+      firstName:"first test",
+      middlename:"middle test",
+      lastName:"last test",
       email:"sdsdddae@k.com",
       phonenumber:"71409487",
+      date_of_birth:"1996-02-19",
+      place_of_birth:"Lebanon",
       idnumber:"1122003",
       username:"test",
       password:"IIIIiiii0000_",
       confirmpassword:"IIIIiiii0000_",
-      status:"Test Status"
+      status:"",
+      country: "Lebanon",
+      city: "Zahle",
+      postal_code: "1021",
+      district: "DK"
     }
   },
 
@@ -157,37 +167,35 @@ export default {
     },
     async register() {
       try {
-        // let formData = new FormData();
-        // formData.append("firstName",this.firstName);
-        // formData.append("middlename",this.middlename);
-        // formData.append("lastName",this.lastName);
-        // formData.append("email",this.email);
-        // formData.append("phonenumber",this.phonenumber);
-        // formData.append("idnumber",this.idnumber);
-        // formData.append("username",this.username);
-        // formData.append("password",this.password);
-        // formData.append("confirmpassword",this.confirmpassword);
         let st={
           "first_name":this.firstName,
           "middle_name":this.middlename,
           "last_name":this.lastName,
           "email":this.email,
           "phone_number":this.phonenumber,
-          "date_of_birth": "1996-02-19",
-          "place_of_birth": "string",
-          "country": "string",
-          "city": "string",
-          "postal_code": "string",
-          "district": "string",
-          "id_number": "string",
+          "date_of_birth": this.date_of_birth,
+          "place_of_birth": this.place_of_birth,
+          "country": this.country,
+          "city": this.city,
+          "postal_code": this.postal_code,
+          "district": this.district,
+          "id_number": this.idnumber,
           "password":this.password,
 
         }
         console.log(JSON.stringify(st));
         const response = await this.$http.post('http://localhost:8000/users/register', st);
-        this.status = response.data
-        console.log(this.status);
+        if(response.status==200)
+        {
+          this.status = "Created Successfuly!";
+        }
+        else
+        {
+          this.status = "Error creating user";
+        }
+        console.log(response.status);
       } catch (error) {
+        this.status = "Error creating user";
         console.log(error);
       }
     }
