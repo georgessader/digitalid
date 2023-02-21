@@ -199,6 +199,9 @@ export default {
         console.log(error);
       }
     }
+  },
+  created() {
+    this.$root.$emit('loadApp')
   }
 };
 </script>

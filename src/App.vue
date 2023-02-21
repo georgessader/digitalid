@@ -52,15 +52,15 @@ export default {
   },
   methods: {
     loadApp() {
-      console.log("called")
       if (sessionStorage.getItem('email'))
         this.items = [
+        { title: 'Dashboard', icon: 'mdi-view-dashboard', to: '/' },
           { title: 'Profile', icon: 'mdi-account', to: '/home' },
-          { title: 'Log out', icon: 'mdi-exit', to: '/logout' }
+          { title: 'Log out', icon: 'mdi-logout', to: '/logout' },
         ]
       else
         this.items = [
-          { title: 'Login', icon: 'mdi-view-dashboard', to: '/' }
+          { title: 'Login', icon: 'mdi-login', to: '/' }
         ]
     },
   },

@@ -12,7 +12,7 @@ export default {
           sessionStorage.removeItem("email")
           sessionStorage.removeItem("id")
           this.$root.$emit('loadApp')
-          this.$router.push({ path: '/login' })
+          this.$router.push({ path: '/' })
         }
       } catch (error) {
         this.status = "Email or password incorrect"

@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card style="width:fit-content;margin:auto;">
     <v-tabs v-model="tab" bg-color="primary">
       <v-tab value="one">Educational profile</v-tab>
       <v-tab value="two">Health profile</v-tab>
@@ -11,9 +11,6 @@
         <v-window-item>
           <v-sheet width="400" class="mx-auto">
             <v-form @submit.prevent>
-
-
-
               <v-text-field v-model="secondaryschoolname" label="Secondary School Name"></v-text-field>
               <v-text-field v-model="bac2major" label="Bac 2 Major"></v-text-field>
               <v-row cols="12">
@@ -110,6 +107,11 @@ export default {
   },
 
   methods: {
+  },
+  created() {
+    if(!sessionStorage.getItem('id'))
+      this.$router.push({ path: '/' })
+    this.$root.$emit('loadApp')
   }
 };
 </script>

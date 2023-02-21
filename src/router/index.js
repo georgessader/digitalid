@@ -25,10 +25,17 @@ const routes = [
     }
   },
   {
+    path: '/continueprofile',
+    name: 'continueprofile',
+    component: function () {
+      return import('../views/continueprofile.vue')
+    }
+  },
+  {
     path: '/home',
     name: 'home',
     component: function () {
-      return import('../views/success.vue')
+      return import('../views/home.vue')
     }
   },
   {

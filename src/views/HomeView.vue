@@ -2,7 +2,7 @@
   <v-sheet width="400" class="mx-auto">
     <v-form @submit.prevent>
       <v-text-field v-model="email" label="UserName"></v-text-field>
-      <v-text-field v-model="password" label="Password"></v-text-field>
+      <v-text-field v-model="password" label="Password" type="password"></v-text-field>
       <a style="width: 100%; text-align: center;" href="/#/forgetpass">Forget Password</a>
       <v-btn block class="mt-2" color="success" @click="register">Log In</v-btn>
       <a style="width: 100%; text-align: center;" href="/#/register">Register</a>
@@ -18,8 +18,8 @@
 export default {
   data() {
     return {
-      email: "ihab-hachem@outlook.com",
-      password: "Ih@b00000",
+      email: "georgess@hotmail.com",
+      password: "IIIIiiii0000_",
       status:""
     }
   },
