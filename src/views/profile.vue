@@ -1,7 +1,9 @@
 <template>
   <h4>
     {{ infos }}
+  <a style="width: 100%; text-align: center;" href="/#/continueprofile">Complete your profile</a>
   </h4>
+  
 </template>
 
 <script>
