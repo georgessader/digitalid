@@ -115,7 +115,7 @@
             </v-form>
           </v-sheet>
 
-          <h1 style="text-align: center; margin-top: 40px;">My Health</h1>
+          <h1 style="text-align: center; margin-top: 40px;">My Careers</h1>
 
 
           <v-form @submit.prevent v-for="(c, i) in career['detail']">
