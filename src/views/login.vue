@@ -3,9 +3,10 @@
     <v-form @submit.prevent>
       <v-text-field v-model="email" label="UserName"></v-text-field>
       <v-text-field v-model="password" label="Password" type="password"></v-text-field>
-      <a style="width: 100%; text-align: center;" href="/#/forgetpass">Forget Password</a>
+      <a style="width: 100%; text-align: center;" href="/#/forgetpassword">Forget Password</a>
       <v-btn block class="mt-2" color="success" @click="register">Log In</v-btn>
-      <a style="width: 100%; text-align: center;" href="/#/register">Register</a>
+      <a style="width: 100%; text-align: center;" href="/#/register">Register</a><br>
+      <a style="width: 100%; text-align: center;" href="/#/continueprofile">Complete your profile</a>
     </v-form>
     <h4 style="color:red;">
       {{ status }}
@@ -37,7 +38,7 @@ export default {
           // http://localhost:8080/#/home
           sessionStorage.setItem("email", this.email);
           sessionStorage.setItem("id", response.data["id"]);
-          this.$router.push({ path: '/home' })
+          this.$router.push({ path: '/profile' })
         }
         console.log(response.status);
       } catch (error) {

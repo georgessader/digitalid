@@ -30,6 +30,7 @@ export default {
     if(!sessionStorage.getItem('id'))
       this.$router.push({ path: '/' })
     this.$root.$emit('loadApp')
+    this.getinfos()
   }
 };
 </script>

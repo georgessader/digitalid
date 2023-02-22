@@ -6,48 +6,45 @@
       <v-tab value="three">Career Profile</v-tab>
     </v-tabs>
 
+
+
+    <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
+
+
+
     <v-card-text>
       <v-window v-model="tab">
         <v-window-item>
           <v-sheet width="400" class="mx-auto">
             <v-form @submit.prevent>
-              <v-text-field v-model="secondaryschoolname" label="Secondary School Name"></v-text-field>
-              <v-text-field v-model="bac2major" label="Bac 2 Major"></v-text-field>
-              <v-row cols="12">
-                <v-col>
-                  <v-text-field v-model="email" label="Grade 10"></v-text-field>
-                </v-col>
-                <v-col>
-                  <v-text-field v-model="email" label="Grade 11"></v-text-field>
-                </v-col>
-                <v-col>
-                  <v-text-field v-model="email" label="Grade 12"></v-text-field>
-                </v-col>
-              </v-row>
-              <v-file-input label="Upload Certificate"></v-file-input>
 
-              <v-checkbox v-model="bs" label="Do you have BS Certificate?"></v-checkbox>
-              <div v-if="bs">
-                <v-text-field v-model="bsuniversityname" label="University Name"></v-text-field>
-                <v-text-field v-model="bsuniversitymajor" label="University Major"></v-text-field>
-                <v-text-field v-model="bscompetedcredit" label="Competed Credit"></v-text-field>
-                <v-text-field v-model="bsgpa" label="GPA"></v-text-field>
-                <v-file-input label="Upload BS Certificate"></v-file-input>
-              </div>
+              <v-radio-group v-model="ctype">
+                <v-radio label="School" value="1"></v-radio>
+                <v-radio label="University" value="2"></v-radio>
+              </v-radio-group>
 
-              <v-checkbox v-model="ms" label="Do you have Master Certificate?"></v-checkbox>
-              <div v-if="ms">
-                <v-text-field v-model="msuniversityname" label="University Name"></v-text-field>
-                <v-text-field v-model="msuniversitymajor" label="University Major"></v-text-field>
-                <v-text-field v-model="mscompetedcredit" label="Competed Credit"></v-text-field>
-                <v-text-field v-model="msgpa" label="GPA"></v-text-field>
-                <v-file-input label="Upload Master Certificate"></v-file-input>
-              </div>
+              <v-text-field v-model="collname" label="College Name"></v-text-field>
+              <v-text-field v-model="major" label="Major"></v-text-field>
+              <v-text-field v-model="gpa" label="GPA"></v-text-field>
+              <v-text-field v-model="creditcompleted" label="Credits Completed"></v-text-field>
 
-              <v-btn type="submit" block class="mt-2">Submit</v-btn>
+              <v-btn type="submit" block class="mt-2" color="success" @click="register">Submit</v-btn>
             </v-form>
           </v-sheet>
         </v-window-item>
+
+
+
+
+
+        <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
+
+
+
+
+
 
         <v-window-item>
           <v-sheet width="400" class="mx-auto">
@@ -62,6 +59,15 @@
             </v-form>
           </v-sheet>
         </v-window-item>
+
+
+
+
+        <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
+
+
+
 
         <v-window-item>
           <v-sheet width="400" class="mx-auto">
@@ -89,6 +95,9 @@
           </v-sheet>
         </v-window-item>
       </v-window>
+    <h4 style="color:green;">
+      {{ status }}
+    </h4>
     </v-card-text>
   </v-card>
 </template>
@@ -99,17 +108,43 @@ export default {
   data() {
     return {
       tab: "one",
-      bs: false,
-      ms: false,
-      prevexp:false,
-      currentpos:false,
+      prevexp: false,
+      currentpos: false,
+      status:"",
+
+      ctype:"",
+      collname:"Col name",
+      major:"CCE",
+      gpa:"3.9",
+      creditcompleted:"105",
+
     }
   },
 
   methods: {
+    async register() {
+      try {
+        let st = {
+          "user": sessionStorage.getItem('email'),
+          "type": this.ctype,
+          "major": this.major,
+          "credits_completed": this.creditcompleted,
+          "gpa": this.gpa,
+          "college_name": this.collname
+        }
+        const response = await this.$http.post('http://localhost:8000/educations/create', st);
+        if (response.status == 200) {
+          this.status="Success!"
+        }
+        console.log(response.status);
+      } catch (error) {
+        this.status = "Error"
+        console.log(error);
+      }
+    }
   },
   created() {
-    if(!sessionStorage.getItem('id'))
+    if (!sessionStorage.getItem('id'))
       this.$router.push({ path: '/' })
     this.$root.$emit('loadApp')
   }

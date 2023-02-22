@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import login from '../views/login.vue'
 
 Vue.use(VueRouter)
 
@@ -8,7 +8,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: login
   },
   {
     path: '/register',
@@ -32,10 +32,17 @@ const routes = [
     }
   },
   {
-    path: '/home',
-    name: 'home',
+    path: '/forgetpassword',
+    name: 'forgetpassword',
     component: function () {
-      return import('../views/home.vue')
+      return import('../views/forgetpassword.vue')
+    }
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: function () {
+      return import('../views/profile.vue')
     }
   },
   {

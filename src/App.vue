@@ -54,8 +54,8 @@ export default {
     loadApp() {
       if (sessionStorage.getItem('email'))
         this.items = [
-        { title: 'Dashboard', icon: 'mdi-view-dashboard', to: '/' },
-          { title: 'Profile', icon: 'mdi-account', to: '/home' },
+        { title: 'Dashboard', icon: 'mdi-view-dashboard', to: '/home' },
+          { title: 'Profile', icon: 'mdi-account', to: '/profile' },
           { title: 'Log out', icon: 'mdi-logout', to: '/logout' },
         ]
       else
