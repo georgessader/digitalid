@@ -88,7 +88,7 @@
             <v-text-field v-model="h['allergy']" label="Allergy"></v-text-field>
             <v-text-field v-model="h['nssf_number']" label="NSSF Number"></v-text-field>
             <v-btn type="submit" block class="mt-2" color="success"
-              @click="editHealth(h['id'],h['chronic_disease'],h['allergy'],h['nssf_number'])">Edit</v-btn>
+              @click="editHealth(h['id'], h['chronic_disease'], h['allergy'], h['nssf_number'])">Edit</v-btn>
             <v-btn type="submit" block class="mt-2" color="delete" @click="deleteHealth(h['id'])">Delete</v-btn>
 
           </v-form>
@@ -104,29 +104,31 @@
 
 
         <v-window-item>
-          <!-- <v-sheet width="400" class="mx-auto">
+          <v-sheet width="400" class="mx-auto">
             <v-form @submit.prevent>
-              <v-text-field v-model="major" label="Major"></v-text-field>
-              <v-checkbox v-model="prevexp" label="Do you have previous experience?"></v-checkbox>
-              <div v-if="prevexp">
-                <v-text-field v-model="pcompanyname" label="Company name"></v-text-field>
-                <v-text-field v-model="pyearsofexperience" label="Years of experience"></v-text-field>
-                <v-text-field v-model="pposition" label="Position"></v-text-field>
-                <v-text-field v-model="presponsibilities" label="Responsibilities"></v-text-field>
-              </div>
-              <v-checkbox v-model="currentpos" label="Do you have previous experience?"></v-checkbox>
-              <div v-if="currentpos">
-                <v-text-field v-model="ccompanyname" label="Company name"></v-text-field>
-                <v-text-field v-model="cyearsofexperience" label="Years of experience"></v-text-field>
-                <v-text-field v-model="cposition" label="Position"></v-text-field>
-                <v-text-field v-model="cresponsibilities" label="Responsibilities"></v-text-field>
-              </div>
-              <v-file-input label="CV"></v-file-input>
-              <v-text-field v-model="portfolio" label="Portfolio"></v-text-field>
-              <v-text-field v-model="linkedinprofile" label="Linked In Profile"></v-text-field>
-              <v-btn type="submit" block class="mt-2">Submit</v-btn>
+              <v-text-field v-model="portfolio_url" label="Portfolio Link"></v-text-field>
+              <v-text-field v-model="linkedin_url" label="Linked In"></v-text-field>
+              <v-text-field v-model="years_experience" label="Years of experience"></v-text-field>
+              <v-text-field v-model="job_title" label="Job title"></v-text-field>
+              <v-text-field v-model="company_name" label="Company Name"></v-text-field>
+              <v-btn type="submit" block class="mt-2" color="success" @click="addCareer">Submit</v-btn>
             </v-form>
-          </v-sheet> -->
+          </v-sheet>
+
+          <h1 style="text-align: center; margin-top: 40px;">My Health</h1>
+
+
+          <v-form @submit.prevent v-for="(c, i) in career['detail']">
+            <v-text-field v-model="c['portfolio_url']" label="Portfolio"></v-text-field>
+            <v-text-field v-model="c['linkedin_url']" label="Linked In"></v-text-field>
+            <v-text-field v-model="c['years_experience']" label="Years of experience"></v-text-field>
+            <v-text-field v-model="c['job_title']" label="Job title"></v-text-field>
+            <v-text-field v-model="c['company_name']" label="Company Name"></v-text-field>
+            <v-btn type="submit" block class="mt-2" color="success"
+              @click="editCareer(c['id'],c['portfolio_url'],c['linkedin_url'],c['years_experience'],c['job_title'],c['company_name'])">Edit</v-btn>
+            <v-btn type="submit" block class="mt-2" color="delete" @click="deleteCareer(c['id'])">Delete</v-btn>
+
+          </v-form>
         </v-window-item>
       </v-window>
       <h4 style="color:green;">
@@ -160,6 +162,15 @@ export default {
       nssf_number: "",
       health: [],
 
+
+
+      portfolio_url: "",
+      linkedin_url: "",
+      years_experience: "",
+      job_title: "",
+      company_name: "",
+      career: [],
+
     }
   },
 
@@ -181,6 +192,18 @@ export default {
         const response = await this.$http.get('http://localhost:8000/health/' + sessionStorage.getItem('email'));
         if (response.status == 200) {
           this.health = response.data;
+          console.log(this.health)
+        }
+      } catch (error) {
+        this.status = "Error"
+        console.log(error);
+      }
+
+
+      try {
+        const response = await this.$http.get('http://localhost:8000/career/' + sessionStorage.getItem('email'));
+        if (response.status == 200) {
+          this.career = response.data;
           console.log(this.health)
         }
       } catch (error) {
@@ -229,6 +252,27 @@ export default {
         console.log(error);
       }
     },
+    async addCareer() {
+      try {
+        let st = {
+          "user": sessionStorage.getItem('email'),
+          "portfolio_url": this.portfolio_url,
+          "linkedin_url": this.linkedin_url,
+          "years_experience": this.years_experience,
+          "job_title": this.job_title,
+          "company_name": this.company_name
+        }
+        const response = await this.$http.post('http://localhost:8000/career/create', st);
+        if (response.status == 200) {
+          this.status = "Success!"
+          location.reload();
+        }
+        console.log(response.status);
+      } catch (error) {
+        this.status = "Error"
+        console.log(error);
+      }
+    },
     async editEducation(id, type, colname, major, gpa, credits) {
       try {
         let st = {
@@ -249,7 +293,7 @@ export default {
         console.log(error);
       }
     },
-    async editHealth(id, cc,a,nssf) {
+    async editHealth(id, cc, a, nssf) {
       try {
         let st = {
           "chronic_disease": cc,
@@ -257,6 +301,26 @@ export default {
           "nssf_number": nssf
         }
         const response = await this.$http.patch('http://localhost:8000/health/' + id, st);
+        if (response.status == 200) {
+          this.status = "Success!"
+          location.reload();
+        }
+        console.log(response.status);
+      } catch (error) {
+        this.status = "Error"
+        console.log(error);
+      }
+    },
+    async editCareer(id, p, l, y, j, c) {
+      try {
+        let st = {
+          "portfolio_url": p,
+          "linkedin_url": l,
+          "years_experience": y,
+          "job_title": j,
+          "company_name": c
+        }
+        const response = await this.$http.patch('http://localhost:8000/career/' + id, st);
         if (response.status == 200) {
           this.status = "Success!"
           location.reload();
@@ -283,6 +347,19 @@ export default {
     async deleteHealth(id) {
       try {
         const response = await this.$http.delete('http://localhost:8000/health/' + id);
+        if (response.status == 200) {
+          this.status = "Deleted!"
+          location.reload();
+        }
+        console.log(response.status);
+      } catch (error) {
+        this.status = "Error"
+        console.log(error);
+      }
+    },
+    async deleteCareer(id) {
+      try {
+        const response = await this.$http.delete('http://localhost:8000/career/' + id);
         if (response.status == 200) {
           this.status = "Deleted!"
           location.reload();
