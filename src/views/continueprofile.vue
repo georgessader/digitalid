@@ -51,7 +51,7 @@
               <v-btn type="submit" block class="mt-2" color="success"
                 @click="editEducation(e['id'], e['type'], e['college_name'], e['major'], e['gpa'], e['credits_completed'])">Edit</v-btn>
               <v-btn type="submit" block class="mt-2" color="delete" @click="deleteEducation(e['id'])">Delete</v-btn>
-              
+
 
               <v-form @submit.prevent>
                 <v-radio-group v-model="uptype">
@@ -101,7 +101,17 @@
             <v-btn type="submit" block class="mt-2" color="success"
               @click="editHealth(h['id'], h['chronic_disease'], h['allergy'], h['nssf_number'])">Edit</v-btn>
             <v-btn type="submit" block class="mt-2" color="delete" @click="deleteHealth(h['id'])">Delete</v-btn>
-
+            
+            <v-form @submit.prevent>
+              <v-radio-group v-model="uptype">
+                <v-radio label="Health Report" value="1"></v-radio>
+                <v-radio label="Vaccination Report" value="2"></v-radio>
+                <v-radio label="Insurance Doc" value="3"></v-radio>
+              </v-radio-group>
+              <v-file-input label="File" v-model="edufile"></v-file-input>
+              <v-text-field type="date" v-if="uptype=='3'" v-model="expdate" label="Expiry Date"></v-text-field>
+              <v-btn type="submit" block class="mt-2" color="success" @click="uploadHealth(h['id'])">Upload</v-btn>
+            </v-form>
           </v-form>
         </v-window-item>
 
@@ -138,7 +148,15 @@
             <v-btn type="submit" block class="mt-2" color="success"
               @click="editCareer(c['id'], c['portfolio_url'], c['linkedin_url'], c['years_experience'], c['job_title'], c['company_name'])">Edit</v-btn>
             <v-btn type="submit" block class="mt-2" color="delete" @click="deleteCareer(c['id'])">Delete</v-btn>
-
+            
+            <v-form @submit.prevent>
+              <v-radio-group v-model="uptype">
+                <v-radio label="Resume" value="1"></v-radio>
+                <v-radio label="Cover Letter" value="2"></v-radio>
+              </v-radio-group>
+              <v-file-input label="File" v-model="edufile"></v-file-input>
+              <v-btn type="submit" block class="mt-2" color="success" @click="uploadCareer(c['id'])">Upload</v-btn>
+            </v-form>
           </v-form>
         </v-window-item>
       </v-window>
@@ -164,8 +182,8 @@ export default {
       major: "",
       gpa: "",
       creditcompleted: "",
-      uptype:"",
-      edufile:[],
+      uptype: "",
+      edufile: [],
       educations: [],
 
 
@@ -173,6 +191,7 @@ export default {
       chronic_disease: "",
       allergy: "",
       nssf_number: "",
+      expdate:"",
       health: [],
 
 
@@ -191,19 +210,19 @@ export default {
     async uploadEducation(id) {
       try {
         let formData = new FormData();
-        formData.append("user",sessionStorage.getItem('id'))
-        formData.append("education_id",id)
-        formData.append("document_type",this.uptype)
-        formData.append("file",this.edufile)
+        formData.append("user", sessionStorage.getItem('id'))
+        formData.append("education_id", id)
+        formData.append("document_type", this.uptype)
+        formData.append("file", this.edufile)
         console.log(formData)
-        const response = await this.$http.post('http://localhost:8000/educations/file/upload', formData,{
-          headers:{
-            'Content-Type' : 'multipart/form-data'
+        const response = await this.$http.post('http://localhost:8000/educations/file/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
           }
         });
         if (response.status == 200) {
           this.status = "Success!"
-          // location.reload();
+          location.reload();
         }
         console.log(response.status);
       } catch (error) {
@@ -211,7 +230,54 @@ export default {
         console.log(error);
       }
     },
-    
+    async uploadHealth(id) {
+      try {
+        let formData = new FormData();
+        formData.append("user", sessionStorage.getItem('id'))
+        formData.append("health_id", id)
+        formData.append("document_type", this.uptype)
+        formData.append("expiry_date",this.expdate)
+        formData.append("file", this.edufile)
+        console.log(formData)
+        const response = await this.$http.post('http://localhost:8000/health/file/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        if (response.status == 200) {
+          this.status = "Success!"
+          location.reload();
+        }
+        console.log(response.status);
+      } catch (error) {
+        this.status = "Error"
+        console.log(error);
+      }
+    },
+    async uploadCareer(id) {
+      try {
+        let formData = new FormData();
+        formData.append("user", sessionStorage.getItem('id'))
+        formData.append("career_id", id)
+        formData.append("document_type", this.uptype)
+        formData.append("file", this.edufile)
+        console.log(formData)
+        const response = await this.$http.post('http://localhost:8000/career/file/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        if (response.status == 200) {
+          this.status = "Success!"
+          location.reload();
+        }
+        console.log(response.status);
+      } catch (error) {
+        this.status = "Error"
+        console.log(error);
+      }
+    },
+
     async getData() {
       try {
         const response = await this.$http.get('http://localhost:8000/educations/' + sessionStorage.getItem('id'));
