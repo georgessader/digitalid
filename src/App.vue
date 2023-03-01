@@ -52,9 +52,16 @@ export default {
   },
   methods: {
     loadApp() {
-      if (sessionStorage.getItem('email'))
+      if (sessionStorage.getItem('email') && sessionStorage.getItem('admin')=="true")
         this.items = [
-        { title: 'Dashboard', icon: 'mdi-view-dashboard', to: '/home' },
+        { title: 'Dashboard', icon: 'mdi-view-dashboard', to: '/dashboard' },
+          { title: 'Profile', icon: 'mdi-account', to: '/profile' },
+          { title: 'Admin page', icon: 'mdi-shield-crown-outline', to: '/admin' },
+          { title: 'Log out', icon: 'mdi-logout', to: '/logout' },
+        ]
+      else if (sessionStorage.getItem('email') && sessionStorage.getItem('admin')=="false")
+        this.items = [
+        { title: 'Dashboard', icon: 'mdi-view-dashboard', to: '/dashboard' },
           { title: 'Profile', icon: 'mdi-account', to: '/profile' },
           { title: 'Log out', icon: 'mdi-logout', to: '/logout' },
         ]

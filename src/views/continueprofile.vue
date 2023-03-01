@@ -4,6 +4,7 @@
       <v-tab value="one">Educational profile</v-tab>
       <v-tab value="two">Health profile</v-tab>
       <v-tab value="three">Career Profile</v-tab>
+      <v-tab value="four">id and selfie</v-tab>
     </v-tabs>
 
 
@@ -101,7 +102,7 @@
             <v-btn type="submit" block class="mt-2" color="success"
               @click="editHealth(h['id'], h['chronic_disease'], h['allergy'], h['nssf_number'])">Edit</v-btn>
             <v-btn type="submit" block class="mt-2" color="delete" @click="deleteHealth(h['id'])">Delete</v-btn>
-            
+
             <v-form @submit.prevent>
               <v-radio-group v-model="uptype">
                 <v-radio label="Health Report" value="1"></v-radio>
@@ -109,7 +110,7 @@
                 <v-radio label="Insurance Doc" value="3"></v-radio>
               </v-radio-group>
               <v-file-input label="File" v-model="edufile"></v-file-input>
-              <v-text-field type="date" v-if="uptype=='3'" v-model="expdate" label="Expiry Date"></v-text-field>
+              <v-text-field type="date" v-if="uptype == '3'" v-model="expdate" label="Expiry Date"></v-text-field>
               <v-btn type="submit" block class="mt-2" color="success" @click="uploadHealth(h['id'])">Upload</v-btn>
             </v-form>
           </v-form>
@@ -148,7 +149,7 @@
             <v-btn type="submit" block class="mt-2" color="success"
               @click="editCareer(c['id'], c['portfolio_url'], c['linkedin_url'], c['years_experience'], c['job_title'], c['company_name'])">Edit</v-btn>
             <v-btn type="submit" block class="mt-2" color="delete" @click="deleteCareer(c['id'])">Delete</v-btn>
-            
+
             <v-form @submit.prevent>
               <v-radio-group v-model="uptype">
                 <v-radio label="Resume" value="1"></v-radio>
@@ -159,10 +160,72 @@
             </v-form>
           </v-form>
         </v-window-item>
+
+
+
+
+        <!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+
+
+
+
+
+        <v-window-item>
+
+          <v-form @submit.prevent>
+            <v-file-input label="File" v-model="idFile"></v-file-input>
+            <v-btn type="submit" block class="mt-2" color="success" @click="uploadId()">Upload Id</v-btn>
+          </v-form>
+
+
+          <v-sheet width="400" class="mx-auto" style="text-align: center;">
+            <!-- <v-btn :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn> -->
+            <!-- <v-btn> -->
+            <div id="app" class="web-camera-container">
+
+
+              <v-btn block class="mt-2" color="success"
+                :class="{ 'is-primary': !isCameraOpen, 'is-danger': isCameraOpen }" @click="toggleCamera">
+                <span v-if="!isCameraOpen">Upload Selfie</span>
+                <span v-else>Close Camera</span>
+              </v-btn>
+
+              <div v-show="isCameraOpen && isLoading" class="camera-loading">
+                <ul class="loader-circle">
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                </ul>
+              </div>
+
+              <div v-if="isCameraOpen" v-show="!isLoading" class="camera-box" :class="{ 'flash': isShotPhoto }">
+
+                <div class="camera-shutter" :class="{ 'flash': isShotPhoto }"></div>
+
+                <video v-show="!isPhotoTaken" ref="camera" :width="450" :height="337.5" autoplay></video>
+
+                <canvas v-show="isPhotoTaken" id="photoTaken" ref="canvas" :width="450" :height="337.5"></canvas>
+              </div>
+
+              <div v-if="isCameraOpen && !isLoading" class="camera-shoot">
+                <button type="button" class="button" @click="takePhoto">
+                  <img src="https://img.icons8.com/material-outlined/50/000000/camera--v2.png">
+                </button>
+              </div>
+
+              <div v-if="isPhotoTaken && isCameraOpen" class="camera-download">
+                <a id="downloadPhoto" download="my-photo.jpg" class="button" role="button" @click="downloadImage">
+                  Send
+                </a>
+              </div>
+            </div>
+            <!-- </v-btn> -->
+          </v-sheet>
+        </v-window-item>
       </v-window>
-      <h4 style="color:green;">
+      <!-- <h4 style="color:green;">
         {{ status }}
-      </h4>
+      </h4> -->
     </v-card-text>
   </v-card>
 </template>
@@ -191,7 +254,7 @@ export default {
       chronic_disease: "",
       allergy: "",
       nssf_number: "",
-      expdate:"",
+      expdate: "",
       health: [],
 
 
@@ -203,10 +266,120 @@ export default {
       company_name: "",
       career: [],
 
+      isCameraOpen: false,
+      isPhotoTaken: false,
+      isShotPhoto: false,
+      isLoading: false,
+      idFile: []
+
     }
   },
 
   methods: {
+    toggleCamera() {
+      if (this.isCameraOpen) {
+        this.isCameraOpen = false;
+        this.isPhotoTaken = false;
+        this.isShotPhoto = false;
+        this.stopCameraStream();
+      } else {
+        this.isCameraOpen = true;
+        this.createCameraElement();
+      }
+    },
+
+    createCameraElement() {
+      this.isLoading = true;
+
+      const constraints = (window.constraints = {
+        audio: false,
+        video: true
+      });
+
+
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then(stream => {
+          this.isLoading = false;
+          this.$refs.camera.srcObject = stream;
+        })
+        .catch(error => {
+          this.isLoading = false;
+          alert("May the browser didn't support or there is some errors.");
+        });
+    },
+
+    stopCameraStream() {
+      let tracks = this.$refs.camera.srcObject.getTracks();
+
+      tracks.forEach(track => {
+        track.stop();
+      });
+    },
+
+    takePhoto() {
+      if (!this.isPhotoTaken) {
+        this.isShotPhoto = true;
+
+        const FLASH_TIMEOUT = 50;
+
+        setTimeout(() => {
+          this.isShotPhoto = false;
+        }, FLASH_TIMEOUT);
+      }
+
+      this.isPhotoTaken = !this.isPhotoTaken;
+
+      const context = this.$refs.canvas.getContext('2d');
+      context.drawImage(this.$refs.camera, 0, 0, 450, 337.5);
+    },
+
+    async downloadImage() {
+      const canvas = document.getElementById("photoTaken").toDataURL("image/jpeg");
+      var blobBin = atob(canvas.split(',')[1]);
+      var array = [];
+      for (var i = 0; i < blobBin.length; i++) {
+        array.push(blobBin.charCodeAt(i));
+      }
+      var file = new Blob([new Uint8Array(array)], { type: 'image/png' });
+
+      // console.log(canvas.getContext('2d'));
+      try {
+        console.log(canvas.data)
+        let formData = new FormData();
+        formData.append("user", sessionStorage.getItem('id'))
+        formData.append("document_type", 1)
+        formData.append("file", file, "camphoto.jpg")
+        const response = await this.$http.post('http://localhost:8000/users/file/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        this.infos = response.data;
+        console.log(response.data)
+      } catch (error) {
+        this.status = "incorrect file type"
+        console.log(error);
+      }
+    },
+    async uploadId() {
+      try {
+        let formData = new FormData();
+        formData.append("user", sessionStorage.getItem('id'))
+        formData.append("document_type", 2)
+        formData.append("file", this.idFile, "id.jpg")
+        const response = await this.$http.post('http://localhost:8000/users/file/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        this.infos = response.data;
+        console.log(response.data)
+      } catch (error) {
+        this.status = "incorrect file type"
+        console.log(error);
+      }
+    },
     async uploadEducation(id) {
       try {
         let formData = new FormData();
@@ -236,7 +409,7 @@ export default {
         formData.append("user", sessionStorage.getItem('id'))
         formData.append("health_id", id)
         formData.append("document_type", this.uptype)
-        formData.append("expiry_date",this.expdate)
+        formData.append("expiry_date", this.expdate)
         formData.append("file", this.edufile)
         console.log(formData)
         const response = await this.$http.post('http://localhost:8000/health/file/upload', formData, {

@@ -37,6 +37,7 @@ export default {
           // http://localhost:8080/#/home
           sessionStorage.setItem("email", this.email);
           sessionStorage.setItem("id", response.data["id"]);
+          sessionStorage.setItem("admin", response.data["admin"]);
           this.$router.push({ path: '/profile' })
         }
         console.log(response.status);
