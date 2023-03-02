@@ -348,7 +348,7 @@ export default {
         console.log(canvas.data)
         let formData = new FormData();
         formData.append("user", sessionStorage.getItem('id'))
-        formData.append("document_type", 1)
+        formData.append("document_type", 2)
         formData.append("file", file, "camphoto.jpg")
         const response = await this.$http.post('http://localhost:8000/users/file/upload', formData, {
           headers: {
@@ -366,7 +366,7 @@ export default {
       try {
         let formData = new FormData();
         formData.append("user", sessionStorage.getItem('id'))
-        formData.append("document_type", 2)
+        formData.append("document_type", 1)
         formData.append("file", this.idFile, "id.jpg")
         const response = await this.$http.post('http://localhost:8000/users/file/upload', formData, {
           headers: {

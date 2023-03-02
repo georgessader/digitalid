@@ -6,11 +6,6 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: login
-  },
-  {
     path: '/register',
     name: 'register',
     component: function () {
@@ -51,7 +46,7 @@ const routes = [
     component: function () {
       return import('../views/dashboard.vue')
     }
-  }
+  },
 ]
 
 const router = new VueRouter({
