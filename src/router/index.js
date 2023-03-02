@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '../views/login.vue'
-import { VFileInput } from 'vuetify/lib'
 
 Vue.use(VueRouter)
 
@@ -16,13 +15,6 @@ const routes = [
     name: 'register',
     component: function () {
       return import('../views/register.vue')
-    }
-  },
-  {
-    path: '/forgetpass',
-    name: 'forgetpass',
-    component: function () {
-      return import('../views/forgetpass.vue')
     }
   },
   {

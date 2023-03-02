@@ -1,5 +1,8 @@
 <template>
   <v-sheet width="500" class="mx-auto">
+    <!-- "../../../digitalid-backend/uploads/education/69109fb9-b661-4a17-ac35-9e4a55e0bc44/s.png" -->
+    <!-- <p @click="openpdf('C:/Users/User/digitalid/digitalid-backend/uploads/education/69109fb9-b661-4a17-ac35-9e4a55e0bc44/s.png')">test</p> -->
+    <a href="@/assets/images/s.pdf" target="_blank">see</a>
     <v-form @submit.prevent>
       <v-radio-group v-model="dtype">
         <v-radio label="Doc 1" value="1"></v-radio>
@@ -24,6 +27,10 @@ export default {
   },
 
   methods: {
+    openpdf(x)
+    {
+      window.open(x);
+    },
     async sendreq() {
       try {
         let st={
