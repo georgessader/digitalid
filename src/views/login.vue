@@ -18,7 +18,7 @@
 export default {
   data() {
     return {
-      email: "georgess@hotmail.com",
+      email: "georges@hotmail.com",
       password: "IIIIiiii0000_",
       status:""
     }

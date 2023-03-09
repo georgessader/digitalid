@@ -355,8 +355,11 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         });
-        this.infos = response.data;
-        console.log(response.data)
+        
+        if(response.status == 200) {
+          this.status = "Success!"
+          location.reload();
+        }
       } catch (error) {
         this.status = "incorrect file type"
         console.log(error);
@@ -373,8 +376,11 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         });
-        this.infos = response.data;
-        console.log(response.data)
+        
+        if(response.status == 200) {
+          this.status = "Success!"
+          location.reload();
+        }
       } catch (error) {
         this.status = "incorrect file type"
         console.log(error);
@@ -393,7 +399,7 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         });
-        if (response.status == 200) {
+        if(response.status == 200) {
           this.status = "Success!"
           location.reload();
         }

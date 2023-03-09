@@ -6,6 +6,13 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/',
+    name: 'login',
+    component: function () {
+      return import('../views/login.vue')
+    }
+  },
+  {
     path: '/register',
     name: 'register',
     component: function () {
@@ -45,6 +52,20 @@ const routes = [
     name: 'dashboard',
     component: function () {
       return import('../views/dashboard.vue')
+    }
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: function () {
+      return import('../views/adminpage.vue')
+    }
+  },,
+  {
+    path: '/viewuser/:userId',
+    name: 'viewuser',
+    component: function () {
+      return import('../views/viewuserinfo.vue')
     }
   },
 ]

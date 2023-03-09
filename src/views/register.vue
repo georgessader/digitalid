@@ -81,15 +81,15 @@ export default {
       isPhotoTaken: false,
       isShotPhoto: false,
       isLoading: false,
-      firstName:"first test",
-      middlename:"middle test",
-      lastName:"last test",
-      email:"sdsdddae@k.com",
+      firstName:"Georges",
+      middlename:"Joseph",
+      lastName:"Sader",
+      email:"georges@hotmail.com",
       phonenumber:"71409487",
       date_of_birth:"1996-02-19",
       place_of_birth:"Lebanon",
-      idnumber:"1122003",
-      username:"test",
+      idnumber:"00112233",
+      username:"georges",
       password:"IIIIiiii0000_",
       confirmpassword:"IIIIiiii0000_",
       status:"",
@@ -181,7 +181,7 @@ export default {
           "district": this.district,
           "id_number": this.idnumber,
           "password":this.password,
-
+          "confirm_password":this.confirmpassword,
         }
         console.log(JSON.stringify(st));
         const response = await this.$http.post('http://localhost:8000/users/register', st);
