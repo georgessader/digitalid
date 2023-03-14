@@ -117,7 +117,7 @@
           </v-card-subtitle>
           </div>
           <v-btn type="submit" class="ml-2" color="blue" @click="verifyHealth()">
-            <p class="mt-4" style="color: white;">Verify Health</p>
+            <p class="mt-4" style="color: white;">Verify Career</p>
           </v-btn>
         </div>
         <div v-else class="mt-4">
