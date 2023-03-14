@@ -1,38 +1,51 @@
 <template>
   <v-card class="mx-auto" max-width="100%">
-   
+
 
     <v-card-title>
-      {{infos["first_name"]+" "+infos["middle_name"]+" "+infos["last_name"]}}
+      {{ infos["first_name"] + " " + infos["middle_name"] + " " + infos["last_name"] }}
     </v-card-title>
 
     <v-card-subtitle>
-      {{ "ID number: "+infos["id_number"] }}<br>
-      {{ "DOB: "+infos["date_of_birth"] }}<br>
-      {{ "Country: "+infos["country"] }}<br>
-      {{ "City: "+infos["city"] }}<br>
-      {{ "Email: "+infos["email"] }}<br>
-      {{ "Phone number: "+infos["phone_number"] }}
+      {{ "ID number: " + infos["id_number"] }}<br>
+      {{ "DOB: " + infos["date_of_birth"] }}<br>
+      {{ "Country: " + infos["country"] }}<br>
+      {{ "City: " + infos["city"] }}<br>
+      {{ "Email: " + infos["email"] }}<br>
+      {{ "Phone number: " + infos["phone_number"] }}
     </v-card-subtitle>
 
-    <v-btn v-if="infos['admin']=='0'" type="submit" class="ml-2" color="blue" @click="assignAdmin()">
+    <v-btn v-if="infos['admin'] == '0'" type="submit" class="ml-2" color="blue" @click="assignAdmin()">
       <p class="mt-4" style="color: white;">Assign Admin</p>
     </v-btn>
     <v-btn v-else type="submit" class="ml-2" color="blue" @click="removeAdmin()">
       <p class="mt-4" style="color: white;">Remove Admin</p>
     </v-btn>
 
-    <div v-if="infos['user_verification_status']!='verified'">
-      <v-checkbox label="Id Image Verified" v-model="id_image_verified"></v-checkbox>
-      <v-checkbox label="Selfy Verfied" v-model="selfie_verified"></v-checkbox>
-      <v-btn type="submit" class="ml-2" color="blue" @click="verifyUser()">
-        <p class="mt-4" style="color: white;">Verify User</p>
-      </v-btn>
-    </div>
-   
-
-
-
+    <v-card class="mx-auto mt-5" max-width="100%">
+      <h2>Id and Selfie</h2>
+      <div v-if="infos['user_verification_status'] != 'verified'" class="mb-5">
+        <div style="display: flex; margin: auto; width: fit-content;">
+          <div class="mr-5">
+            <v-checkbox label="Id Image" v-model="id_image_verified"></v-checkbox>
+            <img :src="infos['id_image']">
+          </div>
+          <div class="ml-5">
+            <v-checkbox label="Selfie" v-model="selfie_verified"></v-checkbox>
+            <img :src="infos['id_image']">
+          </div>
+        </div>
+        <center class="mt-5">
+          <v-btn type="submit" class="ml-2" color="blue" @click="verifyUser()">
+            <p class="mt-4" style="color: white;">Verify User</p>
+          </v-btn>
+        </center>
+      </div>
+      <div v-else class="mt-4">
+        <v-icon class="mr-2" color="green">Verified</v-icon>
+        <v-icon color="green">mdi-shield-check</v-icon>
+      </div>
+    </v-card>
 
   </v-card>
 </template>
@@ -44,8 +57,8 @@ export default {
     return {
       infos: "",
       show: false,
-      id_image_verified:false,
-      selfie_verified:false
+      id_image_verified: false,
+      selfie_verified: false
     }
   },
 
@@ -62,7 +75,7 @@ export default {
     },
     async assignAdmin() {
       try {
-        const response = await this.$http.post('http://localhost:8000/users/admin/assign/'+this.$route.params.userId+'/'+sessionStorage.getItem('id'));
+        const response = await this.$http.post('http://localhost:8000/users/admin/assign/' + this.$route.params.userId + '/' + sessionStorage.getItem('id'));
         this.infos = response.data;
         console.log(response.data)
         location.reload();
@@ -73,7 +86,7 @@ export default {
     },
     async removeAdmin() {
       try {
-        const response = await this.$http.post('http://localhost:8000/users/admin/remove/'+this.$route.params.userId+'/'+sessionStorage.getItem('id'));
+        const response = await this.$http.post('http://localhost:8000/users/admin/remove/' + this.$route.params.userId + '/' + sessionStorage.getItem('id'));
         this.infos = response.data;
         console.log(response.data)
         location.reload();
@@ -88,7 +101,7 @@ export default {
           "id_image_verified": this.id_image_verified,
           "selfie_verified": this.selfie_verified
         }
-        const response = await this.$http.patch('http://localhost:8000/users/verify/'+this.$route.params.userId+'/'+sessionStorage.getItem('id'),st);
+        const response = await this.$http.patch('http://localhost:8000/users/verify/' + this.$route.params.userId + '/' + sessionStorage.getItem('id'), st);
         this.infos = response.data;
         console.log(response.data)
         location.reload();
