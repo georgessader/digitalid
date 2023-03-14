@@ -46,6 +46,86 @@
         <v-icon color="green">mdi-shield-check</v-icon>
       </div>
     </v-card>
+    
+
+    <v-card class="mx-auto mt-5" max-width="100%">
+      <h2>Education</h2>
+      <div v-for="(e, i) in edcautionsUser['detail']">
+        <div v-if="!e['education_verified']" class="mb-5">
+          <div style="display: flex; width: fit-content;">
+          <v-card-subtitle>
+            {{ "Type: "+e["type"] }}<br>
+            {{ "College Name: "+e["college_name"] }}<br>
+            {{ "Cerdit completed: "+e["credits_completed"] }}<br>
+            {{ "Major: "+e["major"] }}<br>
+            {{ "GPA: "+e["gpa"] }}<br>
+            {{ "Certificate: " }} <a v-if="e['certificate']!=null" :href="e['certificate']">See Document</a><span v-else>No document uploaded</span><br>
+          </v-card-subtitle>
+          </div>
+          <v-btn type="submit" class="ml-2" color="blue" @click="verifyEducation()">
+            <p class="mt-4" style="color: white;">Verify Education</p>
+          </v-btn>
+        </div>
+        <div v-else class="mt-4">
+          <v-icon class="mr-2" color="green">Verified</v-icon>
+          <v-icon color="green">mdi-shield-check</v-icon>
+        </div>
+      </div>
+    </v-card>
+    
+
+    <v-card class="mx-auto mt-5" max-width="100%">
+      <h2>Health</h2>
+      <div v-for="(h, i) in healthUser['detail']">
+        <div v-if="h['health_verification_status']=='pending'" class="mb-5">
+          <div style="display: flex; width: fit-content;">
+          <v-card-subtitle>
+            {{ "Chronic Disease: "+h["chronic_disease"] }}<br>
+            {{ "Allergy: "+h["allergy"] }}<br>
+            {{ "NSSF number: "+h["nssf_number"] }}<br>
+            {{ "Insurance Expiry day: "+h["insurance_expiry_date"] }}<br>
+            {{ "Vaccination report: " }} <a v-if="h['vaccination_report']!=null" :href="h['vaccination_report']">See Document</a><span v-else>No document uploaded</span><br>
+            {{ "Insurance Document: " }} <a v-if="h['insurance_doc']!=null" :href="h['insurance_doc']">See Document</a><span v-else>No document uploaded</span><br>
+            {{ "Health Report: " }} <a v-if="h['health_report']!=null" :href="h['health_report']">See Document</a><span v-else>No document uploaded</span><br>
+          </v-card-subtitle>
+          </div>
+          <v-btn type="submit" class="ml-2" color="blue" @click="verifyHealth()">
+            <p class="mt-4" style="color: white;">Verify Health</p>
+          </v-btn>
+        </div>
+        <div v-else class="mt-4">
+          <v-icon class="mr-2" color="green">Verified</v-icon>
+          <v-icon color="green">mdi-shield-check</v-icon>
+        </div>
+      </div>
+    </v-card>
+    
+
+    <v-card class="mx-auto mt-5" max-width="100%">
+      <h2>Career</h2>
+      <div v-for="(c, i) in careerUser['detail']">
+        <div v-if="!c['health_verification_status']" class="mb-5">
+          <div style="display: flex; width: fit-content;">
+          <v-card-subtitle>
+            {{ "Job Title: "+c["job_title"] }}<br>
+            {{ "Company name: "+c["company_name"] }}<br>
+            {{ "Year of experience: "+c["years_experience"] }}<br>
+            <a :href="c['portfolio_url']">Portfolio</a><br>
+            <a :href="c['linkedin_url']">Linked In Profile</a><br>
+            {{ "Cover Letter: " }} <a v-if="c['cover_letter']!=null" :href="c['cover_letter']">See Document</a><span v-else>No document uploaded</span><br>
+            {{ "Resume: " }} <a v-if="c['cv']!=null" :href="c['cv']">See Document</a><span v-else>No document uploaded</span><br>
+          </v-card-subtitle>
+          </div>
+          <v-btn type="submit" class="ml-2" color="blue" @click="verifyHealth()">
+            <p class="mt-4" style="color: white;">Verify Health</p>
+          </v-btn>
+        </div>
+        <div v-else class="mt-4">
+          <v-icon class="mr-2" color="green">Verified</v-icon>
+          <v-icon color="green">mdi-shield-check</v-icon>
+        </div>
+      </div>
+    </v-card>
 
   </v-card>
 </template>
@@ -58,7 +138,10 @@ export default {
       infos: "",
       show: false,
       id_image_verified: false,
-      selfie_verified: false
+      selfie_verified: false,
+      edcautionsUser:[],
+      healthUser:[],
+      careerUser:[],
     }
   },
 
@@ -67,12 +150,42 @@ export default {
       try {
         const response = await this.$http.get('http://localhost:8000/users/details/' + this.$route.params.userId);
         this.infos = response.data;
-        console.log(response.data)
       } catch (error) {
-        this.status = "Email or password incorrect"
+        this.status = "Error"
+        console.log(error);
+      }
+      
+      try {
+        const response = await this.$http.get('http://localhost:8000/educations/' + this.$route.params.userId);
+        if (response.status == 200) {
+          this.edcautionsUser = response.data;
+        }
+      } catch (error) {
+        this.status = "Error"
+        console.log(error);
+      }
+      
+      try {
+        const response = await this.$http.get('http://localhost:8000/health/' + this.$route.params.userId);
+        if (response.status == 200) {
+          this.healthUser = response.data;
+        }
+      } catch (error) {
+        this.status = "Error"
+        console.log(error);
+      }
+      
+      try {
+        const response = await this.$http.get('http://localhost:8000/career/' + this.$route.params.userId);
+        if (response.status == 200) {
+          this.careerUser = response.data;
+        }
+      } catch (error) {
+        this.status = "Error"
         console.log(error);
       }
     },
+
     async assignAdmin() {
       try {
         const response = await this.$http.post('http://localhost:8000/users/admin/assign/' + this.$route.params.userId + '/' + sessionStorage.getItem('id'));
