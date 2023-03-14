@@ -58,8 +58,8 @@
             {{ "College Name: "+e["college_name"] }}<br>
             {{ "Cerdit completed: "+e["credits_completed"] }}<br>
             {{ "Major: "+e["major"] }}<br>
-            {{ "GPA: "+e["gpa"] }}<br>
-            {{ "Certificate: " }} <a v-if="e['certificate']!=null" :href="e['certificate']">See Document</a><span v-else>No document uploaded</span><br>
+            {{ "GPA: "+e["gpa"] }}<v-checkbox label="Verify Grade" v-model="geade_verify"></v-checkbox><br>
+            {{ "Certificate: " }} <v-checkbox label="Verify Certificate" v-model="certifiate_verify"></v-checkbox><a v-if="e['certificate']!=null" :href="e['certificate']">See Document</a><span v-else>No document uploaded</span><br>
           </v-card-subtitle>
           </div>
           <v-btn type="submit" class="ml-2" color="blue" @click="verifyEducation()">
@@ -84,9 +84,12 @@
             {{ "Allergy: "+h["allergy"] }}<br>
             {{ "NSSF number: "+h["nssf_number"] }}<br>
             {{ "Insurance Expiry day: "+h["insurance_expiry_date"] }}<br>
-            {{ "Vaccination report: " }} <a v-if="h['vaccination_report']!=null" :href="h['vaccination_report']">See Document</a><span v-else>No document uploaded</span><br>
-            {{ "Insurance Document: " }} <a v-if="h['insurance_doc']!=null" :href="h['insurance_doc']">See Document</a><span v-else>No document uploaded</span><br>
-            {{ "Health Report: " }} <a v-if="h['health_report']!=null" :href="h['health_report']">See Document</a><span v-else>No document uploaded</span><br>
+            {{ "Vaccination report: " }}
+            <v-checkbox label="Vaccination report" v-model="vaccination_reportv"></v-checkbox> <a v-if="h['vaccination_report']!=null" :href="h['vaccination_report']">See Document</a><span v-else>No document uploaded</span><br>
+            {{ "Insurance Document: " }} 
+            <v-checkbox label="Insurance Document" v-model="insurance_docv"></v-checkbox><a v-if="h['insurance_doc']!=null" :href="h['insurance_doc']">See Document</a><span v-else>No document uploaded</span><br>
+            {{ "Health Report: " }} 
+            <v-checkbox label="Health Report" v-model="health_reportv"></v-checkbox><a v-if="h['health_report']!=null" :href="h['health_report']">See Document</a><span v-else>No document uploaded</span><br>
           </v-card-subtitle>
           </div>
           <v-btn type="submit" class="ml-2" color="blue" @click="verifyHealth()">
@@ -112,11 +115,11 @@
             {{ "Year of experience: "+c["years_experience"] }}<br>
             <a :href="c['portfolio_url']">Portfolio</a><br>
             <a :href="c['linkedin_url']">Linked In Profile</a><br>
-            {{ "Cover Letter: " }} <a v-if="c['cover_letter']!=null" :href="c['cover_letter']">See Document</a><span v-else>No document uploaded</span><br>
-            {{ "Resume: " }} <a v-if="c['cv']!=null" :href="c['cv']">See Document</a><span v-else>No document uploaded</span><br>
+            {{ "Cover Letter: " }} <v-checkbox label="Cover Letter" v-model="cover_letter_verify"></v-checkbox><a v-if="c['cover_letter']!=null" :href="c['cover_letter']">See Document</a><span v-else>No document uploaded</span><br>
+            {{ "Resume: " }} <v-checkbox label="CV" v-model="cv_verify"></v-checkbox><a v-if="c['cv']!=null" :href="c['cv']">See Document</a><span v-else>No document uploaded</span><br>
           </v-card-subtitle>
           </div>
-          <v-btn type="submit" class="ml-2" color="blue" @click="verifyHealth()">
+          <v-btn type="submit" class="ml-2" color="blue" @click="verifyCareer()">
             <p class="mt-4" style="color: white;">Verify Career</p>
           </v-btn>
         </div>
@@ -139,6 +142,17 @@ export default {
       show: false,
       id_image_verified: false,
       selfie_verified: false,
+
+      health_reportv:false,
+      insurance_docv:false,
+      vaccination_reportv:false,
+
+      geade_verify:false,
+      certifiate_verify:false,
+
+      cv_verify:false,
+      cover_letter_verify:false,
+
       edcautionsUser:[],
       healthUser:[],
       careerUser:[],
@@ -218,6 +232,38 @@ export default {
         this.infos = response.data;
         console.log(response.data)
         location.reload();
+      } catch (error) {
+        this.status = "error"
+        console.log(error);
+      }
+    },
+    async verifyHealth() {
+      try {
+        let st = {
+          "health_report_verified": this.health_reportv,
+          "vaccination_verified": this.vaccination_reportv,
+          "insurance_verified": this.insurance_docv
+        }
+        const response = await this.$http.patch('http://localhost:8000/health/verify/' + this.$route.params.userId + '/' + sessionStorage.getItem('id'), st);
+        this.infos = response.data;
+        console.log(response.data)
+        location.reload();
+      } catch (error) {
+        this.status = "error"
+        console.log(error);
+      }
+    },
+    async verifyCareer() {
+      try {
+        let st = {
+          "cv_verified": this.cv_verify,
+          "cover_letter_verified": this.cover_letter_verified
+        }
+        const response = await this.$http.patch('http://localhost:8000/career/verify/' + this.$route.params.userId + '/' + sessionStorage.getItem('id'), st);
+        if (response.status == 200) {
+          this.edcautionsUser = response.data;
+        location.reload();
+        }
       } catch (error) {
         this.status = "error"
         console.log(error);
