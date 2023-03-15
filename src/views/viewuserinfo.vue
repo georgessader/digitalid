@@ -67,6 +67,8 @@
           </v-btn>
         </div>
         <div v-else class="mt-4">
+          {{ "College Name: "+e["college_name"] }} -
+          {{ "Major: "+e["major"] }}
           <v-icon class="mr-2" color="green">Verified</v-icon>
           <v-icon color="green">mdi-shield-check</v-icon>
         </div>
@@ -97,6 +99,9 @@
           </v-btn>
         </div>
         <div v-else class="mt-4">
+          {{ "Chronic Disease: "+h["chronic_disease"] }} - 
+          {{ "Allergy: "+h["allergy"] }} - 
+          {{ "NSSF number: "+h["nssf_number"] }}
           <v-icon class="mr-2" color="green">Verified</v-icon>
           <v-icon color="green">mdi-shield-check</v-icon>
         </div>
@@ -107,7 +112,7 @@
     <v-card class="mx-auto mt-5" max-width="100%">
       <h2>Career</h2>
       <div v-for="(c, i) in careerUser['detail']">
-        <div v-if="!c['health_verification_status']" class="mb-5">
+        <div v-if="c['health_verification_status']==false" class="mb-5">
           <div style="display: flex; width: fit-content;">
           <v-card-subtitle>
             {{ "Job Title: "+c["job_title"] }}<br>
@@ -124,6 +129,9 @@
           </v-btn>
         </div>
         <div v-else class="mt-4">
+          {{ "Job Title: "+c["job_title"] }} - 
+          {{ "Company name: "+c["company_name"] }} - 
+          {{ "Year of experience: "+c["years_experience"] }}
           <v-icon class="mr-2" color="green">Verified</v-icon>
           <v-icon color="green">mdi-shield-check</v-icon>
         </div>
@@ -237,6 +245,21 @@ export default {
         console.log(error);
       }
     },
+    async verifyEducation() {
+      try {
+        let st = {
+          "grade_verified": this.geade_verify,
+          "certificate_verified": this.certifiate_verify
+        }
+        const response = await this.$http.patch('http://localhost:8000/educations/verify/' + this.$route.params.userId + '/' + sessionStorage.getItem('id'), st);
+        this.infos = response.data;
+        console.log(response.data)
+        location.reload();
+      } catch (error) {
+        this.status = "error"
+        console.log(error);
+      }
+    },
     async verifyHealth() {
       try {
         let st = {
@@ -257,12 +280,11 @@ export default {
       try {
         let st = {
           "cv_verified": this.cv_verify,
-          "cover_letter_verified": this.cover_letter_verified
+          "cover_letter_verified": this.cover_letter_verify
         }
         const response = await this.$http.patch('http://localhost:8000/career/verify/' + this.$route.params.userId + '/' + sessionStorage.getItem('id'), st);
         if (response.status == 200) {
-          this.edcautionsUser = response.data;
-        location.reload();
+          location.reload();
         }
       } catch (error) {
         this.status = "error"
