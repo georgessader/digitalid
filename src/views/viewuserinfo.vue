@@ -48,32 +48,7 @@
     </v-card>
 
 
-    <!-- <v-card class="mx-auto mt-5" max-width="100%">
-      <h2>Education</h2>
-      <div v-for="(e, i) in edcautionsUser['detail']">
-        <div v-if="!e['education_verified']" class="mb-5">
-          <div style="display: flex; width: fit-content;">
-          <v-card-subtitle>
-            {{ "Type: "+e["type"] }}<br>
-            {{ "College Name: "+e["college_name"] }}<br>
-            {{ "Cerdit completed: "+e["credits_completed"] }}<br>
-            {{ "Major: "+e["major"] }}<br>
-            {{ "GPA: "+e["gpa"] }}<v-checkbox label="Verify Grade" v-model="grade_verify[i]"></v-checkbox><br>
-            {{ "Certificate: " }} <v-checkbox label="Verify Certificate" v-model="certifiate_verify[i]"></v-checkbox><a v-if="e['certificate']!=null" :href="e['certificate']">See Document</a><span v-else>No document uploaded</span><br>
-          </v-card-subtitle>
-          </div>
-          <v-btn type="submit" class="ml-2" color="blue" @click="verifyEducation()">
-            <p class="mt-4" style="color: white;">Verify Education</p>
-          </v-btn>
-        </div>
-        <div v-else class="mt-4">
-          {{ "College Name: "+e["college_name"] }} -
-          {{ "Major: "+e["major"] }}
-          <v-icon class="mr-2" color="green">Verified</v-icon>
-          <v-icon color="green">mdi-shield-check</v-icon>
-        </div>
-      </div>
-    </v-card> -->
+
 
     <v-card class="mx-auto mt-5" max-width="100%">
       <h2>Education</h2>
@@ -156,45 +131,6 @@
         </tbody>
       </table>
     </v-card>
-
-
-    <!-- <v-card class="mx-auto mt-5" max-width="100%">
-      <h2>Health</h2>
-      <div v-for="(h, i) in healthUser['detail']">
-        <div class="mb-5">
-          <div style="display: flex; width: fit-content;">
-            <v-card-subtitle>
-              {{ "Chronic Disease: " + h["chronic_disease"] }}<br>
-              {{ "Allergy: " + h["allergy"] }}<br>
-              {{ "NSSF number: " + h["nssf_number"] }}<br>
-              {{ "Insurance Expiry day: " + h["insurance_expiry_date"] }}<br>
-              {{ "Vaccination report: " }}
-              <v-checkbox label="Vaccination report" v-model="vaccination_reportv[h['id']]"></v-checkbox> <a
-                v-if="h['vaccination_report'] != null" :href="h['vaccination_report']">See Document</a><span v-else>No
-                document uploaded</span><br>
-              {{ "Insurance Document: " }}
-              <v-checkbox label="Insurance Document" v-model="insurance_docv[h['id']]"></v-checkbox><a
-                v-if="h['insurance_doc'] != null" :href="h['insurance_doc']">See Document</a><span v-else>No document
-                uploaded</span><br>
-              {{ "Health Report: " }}
-              <v-checkbox label="Health Report" v-model="health_reportv[h['id']]"></v-checkbox><a
-                v-if="h['health_report'] != null" :href="h['health_report']">See Document</a><span v-else>No document
-                uploaded</span><br>
-            </v-card-subtitle>
-          </div>
-          <v-btn type="submit" class="ml-2" color="blue" @click="verifyHealth(h['id'])">
-            <p class="mt-4" style="color: white;">Verify Health</p>
-          </v-btn>
-        </div>
-        <div class="mt-4">
-          {{ "Chronic Disease: " + h["chronic_disease"] }} -
-          {{ "Allergy: " + h["allergy"] }} -
-          {{ "NSSF number: " + h["nssf_number"] }}
-          <v-icon class="mr-2" color="green">Verified</v-icon>
-          <v-icon color="green">mdi-shield-check</v-icon>
-        </div>
-      </div>
-    </v-card> -->
 
 
 
@@ -294,45 +230,11 @@
 
 
 
-<!-- 
+
+
+
     <v-card class="mx-auto mt-5" max-width="100%">
       <h2>Career</h2>
-      <div v-for="(c, i) in careerUser['detail']">
-        <div class="mb-5">
-          <div style="display: flex; width: fit-content;">
-            <v-card-subtitle>
-              {{ "Job Title: " + c["job_title"] }}<br>
-              {{ "Company name: " + c["company_name"] }}<br>
-              {{ "Year of experience: " + c["years_experience"] }}<br>
-              <a :href="c['portfolio_url']">Portfolio</a><br>
-              <a :href="c['linkedin_url']">Linked In Profile</a><br>
-              {{ "Cover Letter: " }} <v-checkbox label="Cover Letter"
-                v-model="cover_letter_verify[c['id']]"></v-checkbox><a v-if="c['cover_letter'] != null"
-                :href="c['cover_letter']">See Document</a><span v-else>No document
-                uploaded</span><br>
-              {{ "Resume: " }} <v-checkbox label="CV" v-model="cv_verify[c['id']]"></v-checkbox><a v-if="c['cv'] != null"
-                :href="c['cv']">See Document</a><span v-else>No document uploaded</span><br>
-            </v-card-subtitle>
-          </div>
-          <v-btn type="submit" class="ml-2" color="blue" @click="verifyCareer(c['id'])">
-            <p class="mt-4" style="color: white;">Verify Career</p>
-          </v-btn>
-        </div>
-        <div class="mt-4">
-          {{ "Job Title: " + c["job_title"] }} -
-          {{ "Company name: " + c["company_name"] }} -
-          {{ "Year of experience: " + c["years_experience"] }}
-          <v-icon class="mr-2" color="green">Verified</v-icon>
-          <v-icon color="green">mdi-shield-check</v-icon>
-        </div>
-      </div>
-    </v-card> -->
-
-
-
-
-    <v-card class="mx-auto mt-5" max-width="100%">
-      <h2>Health</h2>
       <table style="border-collapse: collapse;">
         <tr>
           <th>

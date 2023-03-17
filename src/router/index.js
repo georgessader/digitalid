@@ -60,12 +60,19 @@ const routes = [
     component: function () {
       return import('../views/adminpage.vue')
     }
-  },,
+  },
   {
     path: '/viewuser/:userId',
     name: 'viewuser',
     component: function () {
       return import('../views/viewuserinfo.vue')
+    }
+  },
+  {
+    path: '/request',
+    name: 'request',
+    component: function () {
+      return import('../views/request.vue')
     }
   },
 ]

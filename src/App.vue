@@ -57,6 +57,7 @@ export default {
         { title: 'Dashboard', icon: 'mdi-view-dashboard', to: '/dashboard' },
           { title: 'Profile', icon: 'mdi-account', to: '/profile' },
           { title: 'Admin page', icon: 'mdi-shield-crown-outline', to: '/admin' },
+          { title: 'Requests page', icon: 'mdi-shield-crown-outline', to: '/request' },
           { title: 'Log out', icon: 'mdi-logout', to: '/logout' },
         ]
       else if (sessionStorage.getItem('email') && sessionStorage.getItem('admin')=="false")
